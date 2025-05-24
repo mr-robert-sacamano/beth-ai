@@ -44,8 +44,8 @@ export default function ChatPage() {
       </div>    
 
       <div className="p-6 max-w-2xl mx-auto">
-        <div className="pt-3 pb-4 text-7xl md:text-9xl font-black max-w-[600px]">
-          Beth AI
+        <div className="pt-3 pb-4 text-6xl md:text-7xl font-black max-w-[600px]">
+          Beth Chat
         </div>
         <div className="border p-4 rounded-md h-[60vh] overflow-y-auto bg-white shadow border-2 border-black">
           {messages.map((m, i) => (
