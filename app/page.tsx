@@ -1,7 +1,7 @@
-// app/chat/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, CSSProperties } from "react";
+import { PulseLoader } from "react-spinners";
 
 type Message = {
   role: "user" | "developer";
@@ -44,7 +44,7 @@ export default function ChatPage() {
       </div>    
 
       <div className="p-6 max-w-2xl mx-auto">
-        <div className="pt-3 pb-4 text-8xl font-black">
+        <div className="pt-3 pb-4 text-7xl md:text-9xl font-black max-w-[600px]">
           Beth AI
         </div>
         <div className="border p-4 rounded-md h-[60vh] overflow-y-auto bg-white shadow border-2 border-black">
@@ -68,7 +68,15 @@ export default function ChatPage() {
             onClick={sendMessage} 
             className="ml-2 px-4 py-2 bg-blue-600 text-white rounded border-2 border-black"
             disabled={loading}>
-              Flirt
+              {!loading ? 'Flirt' : ''}
+
+              <PulseLoader
+                color="#ffffff"
+                loading={loading}
+                size={5}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />               
           </button>
         </div>
       </div>
