@@ -4,17 +4,18 @@
 import { useState } from "react";
 
 type Message = {
-  role: "user" | "assistant";
+  role: "user" | "developer";
   content: string;
 };
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([{ role: 'developer', content: 'Hey bestie!! It’s your girl Beth, the pink queen of the blockchain! Ready to chat about the future of finance?'}]);
   const [input, setInput] = useState("");
 
   const sendMessage = async () => {
     const userMessage: Message = { role: "user", content: input };
     const updatedMessages: Message[] = [...messages, userMessage];
+
     setMessages(updatedMessages);
     setInput("");
   
@@ -58,7 +59,7 @@ export default function ChatPage() {
             placeholder="Type your message..."
           />
           <button onClick={sendMessage} className="ml-2 px-4 py-2 bg-blue-600 text-white rounded border-2 border-black">
-            Send
+            Flirt
           </button>
         </div>
       </div>
