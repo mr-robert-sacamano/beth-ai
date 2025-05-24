@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, CSSProperties } from "react";
+import { useState } from "react";
 import { PulseLoader } from "react-spinners";
 
 type Message = {
