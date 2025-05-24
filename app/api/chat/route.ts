@@ -8,7 +8,7 @@ const openai = new OpenAI({
 });
 
 const rateLimiter = new RateLimiterMemory({
-  points: 15, // 5 requests
+  points: 10, // 5 requests
   duration: 60, // per 60 seconds by IP
 });
 
