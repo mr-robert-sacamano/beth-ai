@@ -1,12 +1,20 @@
 // app/api/chat/route.ts
 import { OpenAI } from "openai";
 import { NextRequest, NextResponse } from "next/server";
+import { RateLimiterMemory } from 'rate-limiter-flexible';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+const rateLimiter = new RateLimiterMemory({
+  points: 15, // 5 requests
+  duration: 60, // per 60 seconds by IP
+});
+
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get('x-forwarded-for') ?? 'unknown';
+
   const { messages } = await req.json();
   const prompt: string = `Here is a prompt you can use for the ai:
 
@@ -23,10 +31,20 @@ Rules:
 
   messages.push({ role: 'developer', content: prompt});
 
-  const response = await openai.chat.completions.create({
-    model: "gpt-4o",
-    messages,
-  });
+  try {
+    await rateLimiter.consume(ip);
+  } catch (error) {
+    return NextResponse.json({ reply: { role: 'assistant', content: 'Whooaaaa. Slow down, bestie! I can\'t keep up with all these messages!'} });
+  }
 
-  return NextResponse.json({ reply: response.choices[0].message });
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages,
+    });
+
+    return NextResponse.json({ reply: response.choices[0].message });
+  } catch (error) {
+    return NextResponse.json({ reply: { role: 'assistant', content: 'Hiiii, bestie. I\'m a little busy right now, but I\'ll be back later.'} });
+  }  
 }
