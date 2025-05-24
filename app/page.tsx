@@ -67,7 +67,7 @@ export default function ChatPage() {
           <button 
             onClick={sendMessage} 
             className="ml-2 px-4 py-2 bg-blue-600 text-white rounded border-2 border-black"
-            disabled={loading}>
+            disabled={!input || loading}>
               {!loading ? 'Flirt' : ''}
 
               <PulseLoader
