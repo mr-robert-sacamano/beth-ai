@@ -11,6 +11,7 @@ type Message = {
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([{ role: 'developer', content: 'Hey bestie!! It’s your girl Beth, the pink queen of the blockchain! Ready to chat about the future of finance?'}]);
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const sendMessage = async () => {
     const userMessage: Message = { role: "user", content: input };
@@ -18,6 +19,7 @@ export default function ChatPage() {
 
     setMessages(updatedMessages);
     setInput("");
+    setLoading(true);
   
     const res = await fetch("/api/chat", {
       method: "POST",
@@ -27,6 +29,7 @@ export default function ChatPage() {
   
     const data: { reply: Message } = await res.json(); // typed reply
     setMessages([...updatedMessages, data.reply]);
+    setLoading(false);
   };
 
   return (
@@ -41,6 +44,9 @@ export default function ChatPage() {
       </div>    
 
       <div className="p-6 max-w-2xl mx-auto">
+        <div className="pt-3 pb-4 text-8xl font-black">
+          Beth AI
+        </div>
         <div className="border p-4 rounded-md h-[60vh] overflow-y-auto bg-white shadow border-2 border-black">
           {messages.map((m, i) => (
             <div key={i} className={`mb-3 ${m.role === "user" ? "text-right" : "text-left"}`}>
@@ -58,8 +64,11 @@ export default function ChatPage() {
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             placeholder="Type your message..."
           />
-          <button onClick={sendMessage} className="ml-2 px-4 py-2 bg-blue-600 text-white rounded border-2 border-black">
-            Flirt
+          <button 
+            onClick={sendMessage} 
+            className="ml-2 px-4 py-2 bg-blue-600 text-white rounded border-2 border-black"
+            disabled={loading}>
+              Flirt
           </button>
         </div>
       </div>
